@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.Date;
 
 @Getter @Setter @NoArgsConstructor
 public class Todo {
-    int todo_id;
+//    int todo_id;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
@@ -22,9 +23,10 @@ public class Todo {
 
     private String body;
 
+//    @UniqueElements
     private String title;
 
     private String status;
 
-    private User user;
+    private int user_id;
 }

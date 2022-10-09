@@ -4,29 +4,52 @@ package com.fareye.training.controller;
 import com.fareye.training.model.Todo;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 public class TodoController {
 
-    List<Todo> Todos = new ArrayList<>();
+//    List<Todo> Todos = new ArrayList<>();
+static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
 
     @GetMapping("/todo")
-    public List<Todo> get_todo(){
+    public HashMap<Integer, List<Todo>> get_todo(){
         return Todos;
     }
 
     @PostMapping("/addtodo")
-    public List<Todo> createUser(@RequestBody Todo todo){
-        Todos.add(todo);
+    public HashMap<Integer, List<Todo>> createUser(@RequestBody Todo todo) throws Exception {
+        //user not found
+        //same title found
+        if(Todos.get(todo.getUser_id())==null){
+            throw new Exception("User Not Found");
+        }
+        Todos.get(todo.getUser_id()).add(todo);
         return Todos;
     }
 
-    @PutMapping("/todo/{id}")
-    public List<Todo> updateUser(@PathVariable("id") int id, @RequestBody Todo todo){
-        todo.setTodo_id(id);
-        Todos.set(id, todo);
+    @PutMapping("/todo")
+    public HashMap<Integer, List<Todo>> updateUser(@RequestBody Todo todo){
+        //user not found
+        //same title found
+        Todos.get(todo.getUser_id()).add(todo);
         return Todos;
+    }
+
+    @DeleteMapping(value = "/todo/{id}/{title}")
+    public HashMap<Integer, List<Todo>> deleteUser(@PathVariable int id, @PathVariable String title) {
+        List<Todo> usertodo = Todos.get(id);
+//        Todos.get(id).remove(title);
+        for(int i=0; i<usertodo.size(); i++){
+            if(title == usertodo.get(i).getTitle()){
+                Todos.get(id).remove(i);
+            }
+        }
+        return Todos;
+    }
+    @ExceptionHandler({Exception.class})
+    public void handleException(){
+        System.out.println("user not found");
     }
 }

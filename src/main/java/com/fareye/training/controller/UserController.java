@@ -1,43 +1,49 @@
 package com.fareye.training.controller;
 
 import com.fareye.training.model.User;
+import com.fareye.training.util.DataFromApi;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
 public class UserController {
 
-//    List<User> users = new ArrayList<>();
     HashMap<Integer, User> users = new HashMap<>();
+    int count=0;
 
+    @GetMapping("/user")
+    public HashMap<Integer, User> getusers(){
+        return users;
+    }
 
-//    @GetMapping("/abcd")
-//    public String hello(){
-//        return "Hello ";
-//    }
+    @GetMapping("/user/{id}")
+    public User getuserbyid(@PathVariable("id") int id){
+        return users.get(id);
+    }
 
     @PostMapping("/adduser")
     public HashMap<Integer, User> CreateUser(@RequestBody User user){
-        int key = users.size()+1;
+        int key = ++count;
+        user.setUser_id(key);
+        user.setAvatarUrl(DataFromApi.call(user.getFirstName()));
         users.put(key,user);
+        TodoController.Todos.put(key, new ArrayList<>());
         return users;
     }
     @PutMapping("/user/{id}")
     public HashMap<Integer, User> updateUser(@PathVariable("id") int id, @RequestBody User user){
-//        user.setUser_id(id);
+        //id not found exception
+        user.setUser_id(id);
         users.put(id, user);
         return users;
     }
     @DeleteMapping(value = "/user/{id}")
     public HashMap<Integer, User> deleteUser(@PathVariable int id) {
-//        for(int i=0; i<users.size(); i++){
-//            if(id==users.get(i).getUser_id()){
-//                users.remove(i);
-//            }
-//        }
-
         users.remove(id);
+//        Todos.remove(id);
+        TodoController.Todos.remove(id);
         return users;
     }
 }

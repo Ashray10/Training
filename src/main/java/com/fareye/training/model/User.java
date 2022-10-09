@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @Getter @Setter @NoArgsConstructor
 public class User {
 //    @UniqueElements
-//    private int user_id;
+    private int user_id;
     private String firstName;
     private String lastName;
     private String email;
@@ -20,6 +20,7 @@ public class User {
     private String role;
     private boolean activity;
     private String password;
+    private String avatarUrl;
 
 //    @Override
     public void setPassword(String password) {

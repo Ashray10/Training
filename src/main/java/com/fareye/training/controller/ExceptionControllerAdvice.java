@@ -1,5 +1,19 @@
 package com.fareye.training.controller;
 
-public class ExceptionControllerAdvice {
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
+public class ExceptionControllerAdvice {
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<String> handleException(){
+        return new ResponseEntity<>("Duplicate Title", HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<String> UserException(){
+        return new ResponseEntity<>("User Not Found", HttpStatus.BAD_REQUEST);
+    }
 }

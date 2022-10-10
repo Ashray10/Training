@@ -4,6 +4,7 @@ package com.fareye.training.controller;
 import com.fareye.training.model.Todo;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class TodoController {
 
 //    List<Todo> Todos = new ArrayList<>();
-static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
+public static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
 
     @GetMapping("/todo")
     public HashMap<Integer, List<Todo>> get_todo(){
@@ -19,7 +20,8 @@ static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
     }
 
     @PostMapping("/addtodo")
-    public HashMap<Integer, List<Todo>> createUser(@RequestBody Todo todo) throws Exception {
+
+    public HashMap<Integer, List<Todo>> createUser(@RequestBody @Valid Todo todo) throws Exception {
         //user not found
         //same title found
         if(Todos.get(todo.getUser_id())==null){
@@ -30,7 +32,7 @@ static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
     }
 
     @PutMapping("/todo")
-    public HashMap<Integer, List<Todo>> updateUser(@RequestBody Todo todo){
+    public HashMap<Integer, List<Todo>> updateUser(@RequestBody @Valid Todo todo){
         //user not found
         //same title found
         Todos.get(todo.getUser_id()).add(todo);
@@ -47,9 +49,5 @@ static HashMap<Integer, List<Todo>> Todos = new HashMap<>();
             }
         }
         return Todos;
-    }
-    @ExceptionHandler({Exception.class})
-    public void handleException(){
-        System.out.println("user not found");
     }
 }

@@ -3,12 +3,15 @@ package com.fareye.training.util;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
 public class DataFromApi {
+
+    public RestTemplate restTemplate;
     public static String call(String username){
         try {
 

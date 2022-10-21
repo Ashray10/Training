@@ -1,6 +1,8 @@
 package com.fareye.training.controller;
 
 import com.fareye.training.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,12 +54,21 @@ public class UserController {
         users.put(id, user);
         return users;
     }
+//    @DeleteMapping(value = "/user/{id}")
+//    @CrossOrigin("http://localhost:3000")
+//    public HashMap<Integer, User> deleteUser(@PathVariable int id) {
+//        users.remove(id);
+////        Todos.remove(id);
+//        TodoController.Todos.remove(id);
+//        return users;
+//    }
+
     @DeleteMapping(value = "/user/{id}")
     @CrossOrigin("http://localhost:3000")
-    public HashMap<Integer, User> deleteUser(@PathVariable int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
         users.remove(id);
 //        Todos.remove(id);
         TodoController.Todos.remove(id);
-        return users;
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

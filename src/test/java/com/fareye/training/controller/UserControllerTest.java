@@ -2,7 +2,13 @@ package com.fareye.training.controller;
 
 import com.fareye.training.model.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -57,7 +63,7 @@ class UserControllerTest {
     }
 //
     @Test
-    void deleteUser() {
+    void deleteUser() throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
         User user = new User();
         user.setBloodGroup("A");
@@ -65,11 +71,9 @@ class UserControllerTest {
         user.setPhone("00000000");
         user.setStandard("High");
         restTemplate.postForObject("http://localhost:8080/add", user, User.class);
-        User newUser = new User();
-        newUser.setBloodGroup("O");
-        newUser.setName("Jerry");
-        newUser.setPhone("00000001");
-        newUser.setStandard("Low");
-        restTemplate.delete("http://localhost:8080/user/1");
+        RequestEntity<Void> req = RequestEntity
+                .delete(new URI("http://localhost:8080/user/1")).build();
+        ResponseEntity<String> response = restTemplate.exchange(req, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }
